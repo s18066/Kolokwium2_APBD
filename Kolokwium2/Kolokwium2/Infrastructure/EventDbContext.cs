@@ -1,4 +1,5 @@
-﻿using Kolokwium2.Model;
+﻿using System;
+using Kolokwium2.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kolokwium2.Infrastructure
@@ -42,8 +43,45 @@ namespace Kolokwium2.Infrastructure
             modelBuilder.Entity<Event>().HasKey(x => x.IdEvent);
             modelBuilder.Entity<Organiser>().HasKey(x => x.IdOrganiser);
 
+            modelBuilder.Entity<Artist>().HasData(new Artist
+            {
+                Nickname = "nick",
+                IdArtist = 1
+            });
+
+            modelBuilder.Entity<Event>().HasData(
+                new Event()
+                {
+                    IdEvent = 1,
+                    Name = "e1",
+                    EndDate = DateTime.Now.AddDays(2),
+                    StartDate = DateTime.Now
+                });
             
+            modelBuilder.Entity<Event>().HasData(
+                new Event()
+                {
+                    IdEvent = 2,
+                    Name = "e2",
+                    EndDate = DateTime.Now.AddDays(3),
+                    StartDate = DateTime.Now.AddDays(1)
+                });
+
+            modelBuilder.Entity<ArtistEvent>().HasData(new ArtistEvent()
+            {
+                EventId = 1,
+                ArtistId = 1,
+                PerformanceDate = DateTime.Now.AddHours(1)
+            });
             
+            modelBuilder.Entity<ArtistEvent>().HasData(new ArtistEvent()
+            {
+                EventId = 2,
+                ArtistId = 1,
+                PerformanceDate = DateTime.Now.AddHours(1).AddDays(1)
+            });
         }
+        
+        
     }
 }

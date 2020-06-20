@@ -6,7 +6,7 @@ namespace Kolokwium2.Model
 {
     public class Event
     {
-        public int IdEvent { get; }
+        public int IdEvent { get; set; }
         
         public string Name { get; set; }
         

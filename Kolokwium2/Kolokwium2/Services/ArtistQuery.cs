@@ -40,7 +40,8 @@ namespace Kolokwium2.Services
                     Name = x.Name,
                     EndDate = x.EndDate,
                     StartDate = x.StartDate
-                })
+                }),
+                
             };
             
             return Result<ArtistQueryModel>.Found(result);
@@ -59,7 +60,7 @@ namespace Kolokwium2.Services
         
         public bool IsFound { get; }
         
-        public static Result<TIn> Found<TIn>(TIn value) where TIn : class => new Result<TIn>(value, false);
+        public static Result<TIn> Found<TIn>(TIn value) where TIn : class => new Result<TIn>(value, true);
         
         public static Result<TIn> NotFound<TIn>() where TIn : class => new Result<TIn>(null, false);
     }

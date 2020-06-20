@@ -23,7 +23,5 @@ namespace Kolokwium2.QueryModel
         
         public DateTime EndDate { get; set; }
         
-        public DateTime PerformanceDate { get; set; }
-        
     }
 }
