@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kolokwium2.Infrastructure;
+using Kolokwium2.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +32,9 @@ namespace Kolokwium2
                 
             services.AddDbContext<EventDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("EventContext")));
+
+            services.AddScoped<ArtistQuery>();
+            services.AddScoped<ArtistUpdateService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
