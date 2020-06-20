@@ -19,7 +19,7 @@ namespace Kolokwium2.Controllers
             _updateService = updateService;
         }
         
-        [HttpGet("{id: int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ArtistQueryModel>> Get(int id)
         {
             var result = await _artistQuery.GetArtist(id);
@@ -30,15 +30,17 @@ namespace Kolokwium2.Controllers
             return NotFound();
         }
 
-        [HttpPut("{artistId: int}/events/{eventId: int}")]
+        [HttpPut("{artistId}/events/{eventId}")]
         public async Task<ActionResult> UpdateEventPerformanceDate(int artistId, int eventId, [FromBody] ChangePerformanceDate body)
         {
             var result = await _updateService.UpdatePerformanceDate(artistId, eventId, body.PerformanceDate);
-            
-            if (result)
-                return NoContent();
-            
-            return NotFound();
+
+            return result switch
+            {
+                ArtistUpdateService.Status.NotFound => NotFound(),
+                ArtistUpdateService.Status.BadRequest => BadRequest(),
+                _ => NoContent()
+            };
         }
         
     }

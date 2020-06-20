@@ -14,22 +14,22 @@ namespace Kolokwium2.Services
             _dbContext = dbContext;
         }
 
-        public async Task<bool> UpdatePerformanceDate(int artistId, int eventId, DateTime newPerformanceDate)
+        public async Task<Status> UpdatePerformanceDate(int artistId, int eventId, DateTime newPerformanceDate)
         {
             var @event = await _dbContext.Events.SingleOrDefaultAsync(x => x.IdEvent == eventId);
 
             if (@event is null)
             {
-                return false;
+                return Status.NotFound;
             }
-            if (@event?.StartDate < DateTime.UtcNow)
+            if (@event.StartDate < DateTime.UtcNow)
             {
-                return false;
+                return Status.BadRequest;
             }
 
             if (@event.StartDate > newPerformanceDate || @event.EndDate < newPerformanceDate)
             {
-                return false;
+                return Status.BadRequest;
             }
 
             var artistEvent =
@@ -37,13 +37,20 @@ namespace Kolokwium2.Services
                     x.Artist.IdArtist == artistId && x.Event.IdEvent == eventId);
             if (artistEvent is null)
             {
-                return false;
+                return Status.NotFound;
             }
 
             artistEvent.PerformanceDate = newPerformanceDate;
 
             await _dbContext.SaveChangesAsync();
-            return true;
+            return Status.NoContent;
+        }
+
+        public enum Status
+        {
+            NoContent,
+            NotFound,
+            BadRequest
         }
     }
 }
